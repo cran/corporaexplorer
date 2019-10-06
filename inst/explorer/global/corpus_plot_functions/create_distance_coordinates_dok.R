@@ -26,7 +26,6 @@ create_distance_coordinates_dok <- function(test1,
         test1$y_max <-
             test1$y_max + (row_distance * test1$group_row)
 
-
         ## DISTANCE BETWEEN TILES/DOCS HORIZONTALLY
         test1 <- test1 %>%
             dplyr::group_by(rad) %>%
@@ -34,7 +33,7 @@ create_distance_coordinates_dok <- function(test1,
             dplyr::mutate(x_min = x_min + (position_in_row * horizontal_distance),
                           x_max = x_max + (position_in_row * horizontal_distance)) %>%
             dplyr::ungroup()
-}
+    }
 
     # DISTANCE BETWEEN YEARS/GROUPS
     test1$Year_numeric <- as.numeric(factor(test1$Year, levels = unique(test1$Year)))

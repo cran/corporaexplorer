@@ -80,6 +80,3 @@ search_arguments$custom_column <- collect_custom_column(search_arguments$raw_hig
 
 # Checking search arguments -----------------------------------------------
 search_arguments$all_ok <- check_all_input()
-
-# search_arguments$search_terms <- c("росси", "god", "тойе", "под", "man", "путин")
-# search_arguments$search_terms <- c("fires", "lord", "horses", "jlsjdlks", "god", "kljlø")

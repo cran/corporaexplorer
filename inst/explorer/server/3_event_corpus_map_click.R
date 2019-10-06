@@ -4,8 +4,6 @@ shiny::observeEvent(input$plot_click, {
 min_rad <-
         finn_min_rad(input$plot_click, session_variables$plot_build_info)
 
-session_variables$rad <- min_rad
-
 # Data 365 ----------------------------------------------------------------
     if (plot_mode$mode == "data_365") {
         if (length(min_rad) > 0) {

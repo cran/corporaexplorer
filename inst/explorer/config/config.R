@@ -2,11 +2,11 @@
 
 loaded_data <- eval(as.name(getShinyOption("corporaexplorer_data")))
 
-source("./global/backwards_compatibility.R", local = TRUE)
+source("./config/backwards_compatibility.R", local = TRUE)
 
 # Constants ---------------------------------------------------------------
 
-source("./global/constants.R", local = TRUE)
+source("./config/constants.R", local = TRUE)
 
 # From corporaexplorerobject --------------------------------------------
 
@@ -24,7 +24,7 @@ MATRIX_WITHOUT_PUNCTUATION <- loaded_data$ordvektorer$without_punctuation
 if (is.null(loaded_data$name)) {
     CORPUS_TITLE <- "Corpus map"
 } else {
-    CORPUS_TITLE <- paste("Corpus map", "\u2013", loaded_data$name)
+    CORPUS_TITLE <- loaded_data$name
 }
 
 # From function arguments -------------------------------------------------
@@ -51,3 +51,18 @@ if (shiny::getShinyOption("corporaexplorer_regex_engine") == "stringr") {
 if (USE_ONLY_STRINGR == TRUE & USE_ONLY_RE2R == TRUE) {
     USE_ONLY_RE2R <- FALSE
 }
+
+# UI options from function arguments --------------------------------------
+
+ui_options <- shiny::getShinyOption("corporaexplorer_ui_options")
+
+if (!is.null(ui_options$MAX_DOCS_IN_WALL_VIEW)) {
+    MAX_DOCS_IN_WALL_VIEW <- ui_options$MAX_DOCS_IN_WALL_VIEW
+} else {
+    MAX_DOCS_IN_WALL_VIEW <- 12000
+}
+
+
+# Pre-filled sidebar input from function argument -------------------------
+
+source("./config/sidebar_input_values_from_function_call.R", local = TRUE)

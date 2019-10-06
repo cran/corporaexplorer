@@ -131,7 +131,7 @@ a <-
     ),
     color = "black",
     fill = NA,
-    size = 0.2
+    size = 0.1
   )
 
 return(a)

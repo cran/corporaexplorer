@@ -296,7 +296,7 @@ prepare_data <- function(dataset, ...) {
 #'   If \code{date_based_corpus} is \code{FALSE}, this argument can be used
 #'   to group the documents, e.g. if \code{dataset} is organised by chapters
 #'   belonging to different books.
-#' @param columns_doc_info Character vector. The columns from df to display in
+#' @param columns_doc_info Character vector. The columns from \code{dataset} to display in
 #'   the "document information" tab in the corpus exploration app. By default
 #'   "Date", "Title" and "URL" will be
 #'   displayed, if included. If \code{columns_doc_info} includes a column which is not
@@ -567,21 +567,26 @@ prepare_data.character <- function(dataset, ...) {
 
 #' Print corporaexplorerobject
 #'
-#' @param obj A corporaexplorerobject
+#' @param x A corporaexplorerobject
 #'
 #' @return Console-friendly output
 #' @keywords internal
-print.corporaexplorerobject <- function(obj) {
-cat("corporaexplorerobject\n")
-if (!is.null(obj$corpus_name)) {
-    cat("Corpus name:", obj$corpus_name, "\n")
-}
+#' @export
+print.corporaexplorerobject <- function(x, ...) {
+  cat("corporaexplorerobject\n")
+  if (!is.null(x$corpus_name)) {
+    cat("Corpus name:", x$corpus_name, "\n")
+  }
 
-cat("Documents:", nrow(obj$original_data$data_dok), "\n")
+  cat("Created by corporaexplorer version",
+      as.character(x[["version"]]),
+      "\n")
 
-if (!is.null(obj[["original_matrix"]][["data_dok"]])) {
+  cat("Documents:", nrow(x$original_data$data_dok), "\n")
+
+  if (identical(x[["original_matrix"]][["data_dok"]], FALSE) == FALSE) {
     cat("Contains matrix with",
-        length(obj[["ordvektorer"]][["data_dok"]]),
+        length(x[["ordvektorer"]][["data_dok"]]),
         "unique tokens\n")
-}
+  }
 }
