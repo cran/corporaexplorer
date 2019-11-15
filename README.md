@@ -29,6 +29,20 @@ status](https://ci.appveyor.com/api/projects/status/github/kgjerde/corporaexplor
 > [sentimentr](https://github.com/trinker/sentimentr) and
 > [qdap](https://github.com/trinker/qdap)*
 
+<!-- HTML here, in order to add custom font colour in Github Pages-->
+
+<blockquote>
+
+<p style="color:green">
+
+<strong>– Featured in RStudio’s “R Views” blog’s
+<a href="https://rviews.rstudio.com/2019/10/29/sept-2019-top-40-new-r-packages/"><strong><i>“Top
+40 New R Packages”</i></strong></a> for September 2019</strong>
+
+</p>
+
+</blockquote>
+
 <hr>
 
 <br>
@@ -147,8 +161,3 @@ welcome. Ways to contribute:
     request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
     through the [project GitHub
     page](https://github.com/kgjerde/corporaexplorer).
-
-<hr>
-
-<a name="footnote1">*1</a>. All this material is licensed under Creative
-Commons Attribution 4.0 International (CC BY 4.0).*

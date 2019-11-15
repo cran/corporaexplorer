@@ -54,10 +54,9 @@ run_document_extractor <- function(corpus_object, max_html_docs = 400, ...) {
     )
   }
 
-  corpus_object <- as.character(substitute(corpus_object))
   shiny::shinyOptions("corporaexplorer_download_data" = corpus_object)
 
   shiny::shinyOptions("corporaexplorer_download_max_html" = max_html_docs)
 
-  shiny::runApp(app, display.mode = "normal", ...)
+  shiny::shinyAppFile(app, options = list(display.mode = "normal", ...))
 }

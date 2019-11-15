@@ -1,12 +1,13 @@
 # Data set-up -------------------------------------------------------------
 
-loaded_data <- eval(as.name(getShinyOption("corporaexplorer_data")))
+loaded_data <- getShinyOption("corporaexplorer_data")
 
 source("./config/backwards_compatibility.R", local = TRUE)
 
 # Constants ---------------------------------------------------------------
 
 source("./config/constants.R", local = TRUE)
+source("./config/config_convenience_functions.R", local = TRUE)
 
 # From corporaexplorerobject --------------------------------------------
 
@@ -27,24 +28,43 @@ if (is.null(loaded_data$name)) {
     CORPUS_TITLE <- loaded_data$name
 }
 
-# From function arguments -------------------------------------------------
+# Search options from function arguments ----------------------------------
+
+search_options <- shiny::getShinyOption("corporaexplorer_search_options")
+
 
 if (NO_MATRIX == FALSE) {
-    NO_MATRIX <- !shiny::getShinyOption("corporaexplorer_use_matrix")
+    if (!is.null(search_options$use_matrix)) {
+        if (is.logical(search_options$use_matrix)) {
+            NO_MATRIX <- !search_options$use_matrix
+        }
+    }
 }
 
-OPTIONAL_INFO_TO_CONSOLE <- shiny::getShinyOption("corporaexplorer_optional_info")
+OPTIONAL_INFO_TO_CONSOLE <- FALSE
+if (!is.null(search_options$optional_info)) {
+    if (is.logical(search_options$optional_info)) {
+        OPTIONAL_INFO_TO_CONSOLE <- search_options$optional_info
+    }
+}
 
-SAFE_SEARCH <- !shiny::getShinyOption("corporaexplorer_allow_unreasonable_patterns")
+SAFE_SEARCH <- TRUE
+if (!is.null(search_options$allow_unreasonable_patterns)) {
+    if (is.logical(search_options$allow_unreasonable_patterns)) {
+        SAFE_SEARCH <- !search_options$allow_unreasonable_patterns
+    }
+}
 
 # Initialising
 USE_ONLY_STRINGR <- FALSE
 USE_ONLY_RE2R <- FALSE
 
-if (shiny::getShinyOption("corporaexplorer_regex_engine") == "stringr") {
-    USE_ONLY_STRINGR <- TRUE
-} else if (shiny::getShinyOption("corporaexplorer_regex_engine") == "re2r") {
-    USE_ONLY_RE2R <- TRUE
+if (!is.null(search_options$regex_engine)) {
+    if (search_options$regex_engine == "stringr") {
+        USE_ONLY_STRINGR <- TRUE
+    } else if (search_options$regex_engine == "re2r") {
+        USE_ONLY_RE2R <- TRUE
+    }
 }
 
 # Safety precaution:
@@ -56,12 +76,51 @@ if (USE_ONLY_STRINGR == TRUE & USE_ONLY_RE2R == TRUE) {
 
 ui_options <- shiny::getShinyOption("corporaexplorer_ui_options")
 
-if (!is.null(ui_options$MAX_DOCS_IN_WALL_VIEW)) {
-    MAX_DOCS_IN_WALL_VIEW <- ui_options$MAX_DOCS_IN_WALL_VIEW
+## At the moment only css arguments here.
+
+# Plot options from function arguments ------------------------------------
+
+plot_options <- shiny::getShinyOption("corporaexplorer_plot_options")
+
+PLOT_SIZE_FACTOR <- 10
+if (!is.null(plot_options$plot_size_factor)) {
+    if (is.numeric(plot_options$plot_size_factor)) {
+        if (plot_options$plot_size_factor > 0) {
+            PLOT_SIZE_FACTOR <- 10 * plot_options$plot_size_factor
+        }
+    }
+}
+
+MAX_WIDTH_FOR_ROW <- 75
+if (!is.null(plot_options$documents_per_row_factor)) {
+    if (is.numeric(plot_options$documents_per_row_factor)) {
+        if (plot_options$documents_per_row_factor > 0) {
+            MAX_WIDTH_FOR_ROW <- 75 * plot_options$documents_per_row_factor
+        }
+    }
+}
+
+DOCUMENT_TILES <- 50
+if (!is.null(plot_options$document_tiles)) {
+    if (is.numeric(plot_options$document_tiles)) {
+        if (plot_options$document_tiles %in% 1:50) {
+            DOCUMENT_TILES <- as.integer(plot_options$document_tiles)
+        }
+    }
+}
+
+if (!is.null(plot_options$max_docs_in_wall_view)) {
+    MAX_DOCS_IN_WALL_VIEW <- plot_options$max_docs_in_wall_view
 } else {
     MAX_DOCS_IN_WALL_VIEW <- 12000
 }
 
+MAIN_COLOURS <- c("red", "blue", "green", "purple", "orange", "gray")
+if (!is.null(plot_options$colours)) {
+    MAIN_COLOURS <- create_colours_from_input(plot_options$colours,
+                                              MAIN_COLOURS)
+}
+MY_COLOURS <- rep(MAIN_COLOURS, 10)
 
 # Pre-filled sidebar input from function argument -------------------------
 

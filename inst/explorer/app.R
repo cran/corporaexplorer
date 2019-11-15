@@ -72,18 +72,19 @@ ui <- function(request) {
 
 server <- function(input, output, session) {
 
-# Conditional sidebar UI elements -----------------------------------------
+# Session scope function files --------------------------------------------
+source("./server/functions_collect_input_terms.R", local = TRUE)
+source("./server/functions_checking_input.R", local = TRUE)
+source("./server/functions_ui_management.R", local = TRUE)
+source("./server/function_collect_edited_info_plot_legend_keys.R", local = TRUE)
+
+# Conditional and customised sidebar UI elements --------------------------
 source("./ui/render_ui_sidebar_date_filtering.R", local = TRUE)
 source("./ui/hide_ui_sidebar_plot_mode.R", local = TRUE)
+source("./ui/set_colours_in_search_fields.R", local = TRUE)
 
 # Session variables -------------------------------------------------------
 source("./server/session_variables.R", local = TRUE)
-
-# Session scope function files --------------------------------------------
-source("./server/functions_collect_input_terms.R", local = TRUE)
-source("./server/functions_checking_input_terms.R", local = TRUE)
-source("./server/functions_ui_management.R", local = TRUE)
-source("./server/function_collect_edited_info_plot_legend_keys.R", local = TRUE)
 
 # Corpus info tab ---------------------------------------------------------
 source("./server/corpus_info_tab.R", local = TRUE)
@@ -108,13 +109,11 @@ source("./server/6_event_hover_corpus_map.R", local = TRUE)
 
 # Cleaning up the session -------------------------------------------------
 shiny::onSessionEnded(function() {
-  shiny::shinyOptions("corporaexplorer_use_matrix" = NULL)
-  shiny::shinyOptions("corporaexplorer_regex_engine" = NULL)
   shiny::shinyOptions("corporaexplorer_data" = NULL)
-  shiny::shinyOptions("corporaexplorer_optional_info" = NULL)
-  shiny::shinyOptions("corporaexplorer_allow_unreasonable_patterns" = NULL)
+  shiny::shinyOptions("corporaexplorer_search_options" = NULL)
   shiny::shinyOptions("corporaexplorer_ui_options" = NULL)
   shiny::shinyOptions("corporaexplorer_input_arguments" = NULL)
+  shiny::shinyOptions("corporaexplorer_plot_options" = NULL)
 })
 }
 

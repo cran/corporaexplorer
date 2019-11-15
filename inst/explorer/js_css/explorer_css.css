@@ -8,7 +8,7 @@
   border-radius: 1px;
   padding: 10px;
   overflow: scroll;
-  font-size: 14px;
+  font-size: 1em;
   font-family: "Verdana", sans-serif;
 }
 
@@ -20,30 +20,11 @@
   height: calc(100vh - 200px);
 }
 
-.boxed_docinfo {
-  border: 1px solid LightGray;
-  border-radius: 5px;
-  padding: 10px;
-  max-height: 50px;
-  overflow: scroll;
-  font-size: 10px;
-}
-
-.boxed_docinfo_2 {
-  border: 1px solid LightGray;
-  border-radius: 5px;
-  padding: 8px;
-  max-height: 70px;
-  overflow: scroll;
-  font-size: 10px;
-}
-
-#area, #filter_text {
+#highlight_terms_area, #filter_text_area {
   padding-left:10px;
   padding-top: 10px;
   padding-right:10px;
   margin-top:-2em;
-  margin_bottom: -1em;
   resize: vertical;
   background-color: white;
   min-height: 40px;
@@ -58,7 +39,7 @@ input:-webkit-autofill:active {
     -webkit-transition: color 9999s ease-out, background-color 9999s ease-out;
 }
 
-#search_text {
+#search_text_1 {
   padding-left:10px;
   padding-top: 10px;
   padding-right:10px;
@@ -66,17 +47,17 @@ input:-webkit-autofill:active {
   margin-bottom:-1em;
   margin-top: 0em;
   resize: none;
-  background-color: red;
   /*font-size:10px;*/
   height:25px;
   color: white;
+  display: none;
 }
 
-#area_2,
-#area_3,
-#area_4,
-#area_5,
-#area_6 {
+#search_text_2,
+#search_text_3,
+#search_text_4,
+#search_text_5,
+#search_text_6 {
   padding-left:10px;
   padding-top: 10px;
   padding-right:10px;
@@ -88,28 +69,7 @@ input:-webkit-autofill:active {
   color: white;
 }
 
-
-#area_2 {
-  background-color: blue;
-}
-
-#area_3 {
-  background-color: green;
-}
-
-#area_4 {
-  background-color: purple;
-}
-
-#area_5 {
-  background-color: orange;
-}
-
-#area_6 {
-  background-color: gray;
-}
-
-#trykk {
+#search_button {
   /*margin-left:1em;
   margin-right:1em;*/
   width: 87%;
@@ -125,7 +85,6 @@ https://stackoverflow.com/questions/11399537/how-do-you-make-a-div-follow-as-you
     position: fixed;
     top: 60px;
     margin-right: 10px;
-    /*width: 815px;*/
     display:none;
 }
 
@@ -135,6 +94,34 @@ https://stackoverflow.com/questions/11399537/how-do-you-make-a-div-follow-as-you
     bottom: 0;
     overflow: scroll;
     display:none;
+}
+
+/*
+To enable day and doc boxes to move under corpus map if resizing or
+on small screen + avoid "double navbar" on small screen by removing
+logo element
+*/
+
+@media (max-width:768px){
+  .class_doc_box .nav-tabs-custom,
+  .class_day_corpus .nav-tabs-custom,
+  .class_doc_box {
+    position:static;
+  }
+}
+
+@media (max-width:768px){
+  .skin-blue .main-header .logo {
+  display:none;
+  }
+}
+
+/*
+To keep tab box "nav bars" white also when boxes moved under corpus map
+due to resizing
+*/
+.nav-tabs {
+  background-color: white;
 }
 
 
