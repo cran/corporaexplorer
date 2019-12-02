@@ -38,7 +38,7 @@ visualiser_korpus <-
            .width = "auto",
            matriksen = loaded_data$original_matrix$data_dok,
            ordvektor = loaded_data$ordvektorer$data_dok,
-           number_of_factors = 8,
+           number_of_factors = NUMBER_OF_FACTORS,
            doc_df,
            search_arguments,
            modus) {
@@ -113,7 +113,12 @@ visualiser_korpus <-
 
 # 7. Assign colours to plot labels/factors (up to 2 terms) ----------------
 
-    temp_variable_for_unpacking <- colours_to_plot_and_legend(df, linjer, number_of_factors, !identical(search_arguments$search_terms, ""))
+    temp_variable_for_unpacking <-
+      colours_to_plot_and_legend(df,
+                                 linjer,
+                                 number_of_factors,
+                                 !identical(search_arguments$search_terms, ""),
+                                 plot_mode = modus)
     df <- temp_variable_for_unpacking[[1]]
     legend_df <- temp_variable_for_unpacking[[2]]
 

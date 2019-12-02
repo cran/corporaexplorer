@@ -1,4 +1,30 @@
-# corporaexplorer 0.6.3.9000
+# corporaexplorer 0.8.0
+
+## Breaking API changes
+
+* **`run_corpus_explorer()` is deprecated and replaced with `explore()`.**
+  + `explore()` works in the precise same way as `run_corpus_explorer()`, but is faster to type and makes a nice pair with the new `explore0()` function (see below).
+  + `run_corpus_explorer()` still works (as a thin wrapper to `explore()`),
+but yields a warning.
+* Removed `normalise` argument from `prepare_data()`
+* Added `within_group_identifier` and `tile_length_range` arguments in `prepare_data()` (leading to new order of arguments)
+
+## New function
+
+* Added `explore0()`, a convenience function to directly explore a data frame
+or character vector without first creating a 'corporaexplorerobject'
+with `prepare_data()`.
+
+## Demo apps
+
+* Included demo apps: Jane Austen's novels and State of the Union addresses,
+with data from the `janeaustenr` and `sotu` packages, respectively. See `run_janeausten_app()` and `run_sotu_app()`
+
+## Other
+
+* Minimum corpus plot height is again 100.
+
+# corporaexplorer 0.7.0
 
 ## Breaking API changes
 

@@ -5,31 +5,24 @@
 #' @param df Data frame with Date column (Date), Text column (character), and
 #'   optionally Title (character), URL (character), and Type (character)
 #'   columns.
-#' @param normalise Should non-breaking spaces (U+00A0) and soft hyphens
-#'   (U+00ad) be normalised?
+#' @param tile_length_range Numeric vector of length two.
+#'   Fine-tune the tile lengths in document wall
+#'   and day corpus view. Tile length is calculated by
+#'   \code{scales::rescale(nchar(dataset$Text),
+#'   to = tile_length_range,
+#'   from = c(0, max(.)))}
+#'   Default is \code{c(1, 10)}.
 #' @return A tibble ("data_dok")
 #' @keywords internal
-transform_regular <- function(df, normalise = TRUE) {
+transform_regular <- function(df, tile_length_range = c(1, 10)) {
   message("Starting.")
-
-  if (normalise == TRUE) {
-    for (i in seq_along(df)) {
-      # Only for character columns
-      if (is.character(df[[i]])) {
-        ## På grunn av non-breaking-spaces:
-        df[[i]] <- gsub("\u00A0", " ", df[[i]], fixed = TRUE)
-        ## And "soft hyphens"
-        df[[i]] <- gsub("\u00ad", "", df[[i]], fixed = TRUE)
-      }
-    }
-  }
 
   df <- dplyr::arrange(df, Date)
 
   df$Year <- lubridate::year(df$Date)
 
   df$Tile_length <- nchar(df$Text) %>%
-    scales::rescale(to = c(1, 10), from = c(0, max(.)))
+    scales::rescale(to = tile_length_range, from = c(0, max(.)))
 
   df$ID <- seq_len(nrow(df))
 
@@ -178,7 +171,7 @@ transform_365 <- function(new_df) {
 #' one so desires, there are three different solutions: set this parameter to
 #' \code{FALSE}, create a corporaexplorerobject without a matrix by setting
 #' the \code{use_matrix} parameter to \code{FALSE}, or run
-#' \code{\link[corporaexplorer]{run_corpus_explorer}} with the
+#' \code{\link[corporaexplorer]{explore}} with the
 #' \code{use_matrix} parameter set to \code{FALSE}.
 #' }
 #'  If \code{FALSE}, the corporaexplorer object will be larger, and most
@@ -274,7 +267,13 @@ get_term_vector <- function(returned_list) {
 
 #' Prepare data for corpus exploration
 #'
+#' Convert data frame or character vector to a ‘corporaexplorerobject’
+#'   for subsequent exploration.
+#'
 #' @param ... Ignored.
+#' @return A \code{corporaexplorer} object to be passed as argument to
+#'   \code{\link[corporaexplorer]{explore}} and
+#'   \code{\link[corporaexplorer]{run_document_extractor}}.
 #' @export
 prepare_data <- function(dataset, ...) {
    UseMethod("prepare_data")
@@ -296,6 +295,11 @@ prepare_data <- function(dataset, ...) {
 #'   If \code{date_based_corpus} is \code{FALSE}, this argument can be used
 #'   to group the documents, e.g. if \code{dataset} is organised by chapters
 #'   belonging to different books.
+#' @param within_group_identifier Character string indicating column name in \code{dataset}.
+#'  \code{"Seq"}, the default, means the rows in each group are assigned
+#'  a numeric sequence 1:n where n is the number of rows in the group.
+#'  Used in document tab title in non-date based corpora.
+#'  If \code{date_based_corpus} is \code{TRUE}, this argument is ignored.
 #' @param columns_doc_info Character vector. The columns from \code{dataset} to display in
 #'   the "document information" tab in the corpus exploration app. By default
 #'   "Date", "Title" and "URL" will be
@@ -308,9 +312,8 @@ prepare_data <- function(dataset, ...) {
 #'   searching will be slower.
 #' @inheritParams transform_regular
 #' @inheritParams matrix_via_r
-#' @details Each row in \code{dataset} is treated as a base differentiating unit in the corpus,
+#' @details For data.frame: Each row in \code{dataset} is treated as a base differentiating unit in the corpus,
 #'   typically chapters in books, or a single document in document collections.
-#'
 #'   The following column names are reserved and cannot be used in \code{dataset}:
 #'   "ID",
 #'   "Text_original_case",
@@ -321,10 +324,8 @@ prepare_data <- function(dataset, ...) {
 #'   "Day_without_docs",
 #'   "Invisible_fake_date",
 #'   "Tile_length".
-#' @return A \code{corporaexplorer} object to be passed as argument to
-#'   \code{\link[corporaexplorer]{run_corpus_explorer}} and
-#'   \code{\link[corporaexplorer]{run_document_extractor}}.
 #' @examples
+#' ## From data.frame
 #' # Constructing test data frame:
 #' dates <- as.Date(paste(2011:2020, 1:10, 21:30, sep = "-"))
 #' texts <- paste0(
@@ -334,12 +335,12 @@ prepare_data <- function(dataset, ...) {
 #' titles <- paste("Text", 1:10)
 #' test_df <- tibble::tibble(Date = dates, Text = texts, Title = titles)
 #'
-#' # Converting to corporaexplorer object:
+#' # Converting to corporaexplorerobject:
 #' corpus <- prepare_data(test_df, corpus_name = "Test corpus")
 #'
 #' if(interactive()){
 #' # Running exploration app:
-#' run_corpus_explorer(corpus)
+#' explore(corpus)
 #'
 #' # Running app to extract documents:
 #' run_document_extractor(corpus)
@@ -347,20 +348,19 @@ prepare_data <- function(dataset, ...) {
 prepare_data.data.frame <- function(dataset,
                          date_based_corpus = TRUE,
                          grouping_variable = NULL,
+                         within_group_identifier = "Seq",
                          columns_doc_info = c("Date", "Title", "URL"),
                          corpus_name = NULL,
                          use_matrix = TRUE,
-                         normalise = TRUE,
                          matrix_without_punctuation = TRUE,
+                         tile_length_range = c(1, 10),
                          ...) {
-
 
 # Argument checking general -----------------------------------------------
 
   if (!all(is.logical(c(
     date_based_corpus,
     use_matrix,
-    normalise,
     matrix_without_punctuation
   )))) {
     stop(
@@ -424,6 +424,13 @@ prepare_data.data.frame <- function(dataset,
     )
   }
 
+  if (is.numeric(tile_length_range) == FALSE |
+      length(tile_length_range) != 2) {
+    stop("Hmm. Make sure that 'tile_length_range' is a numeric vector of length 2.",
+      call. = FALSE
+    )
+  }
+
 # Argument checking date_based_corpus -------------------------------------
 
   if (date_based_corpus == TRUE) {
@@ -472,10 +479,7 @@ prepare_data.data.frame <- function(dataset,
 
 # The main function proper ------------------------------------------------
 
-  abc <- transform_regular(
-    dataset,
-    normalise
-  )
+  abc <- transform_regular(dataset, tile_length_range)
 
   if (date_based_corpus == TRUE) {
     abc_365 <- transform_365(abc)
@@ -505,9 +509,18 @@ prepare_data.data.frame <- function(dataset,
       abc$Year <- " "
     }
 
-    abc <- abc %>%
-      dplyr::group_by(Year) %>%
-      dplyr::mutate(Seq = 1:dplyr::n())
+    if (within_group_identifier %in% c("Seq", colnames(dataset)) == FALSE) {
+      stop("'within_group_identifier' must be a column in 'dataset'.",
+        call. = FALSE)
+    }
+
+    if (within_group_identifier == "Seq") {
+      abc <- abc %>%
+        dplyr::group_by(Year) %>%
+        dplyr::mutate(Seq = 1:dplyr::n())
+    } else {
+      abc$Seq <- abc[[within_group_identifier]]
+    }
 
   }
 
@@ -542,28 +555,50 @@ prepare_data.data.frame <- function(dataset,
 
 # Method for character  ---------------------------------------------------
 
-#' Quickly explore character vector
+#' Method for preparing character vector for exploration
 #'
-#' Quick convertion of character vector to simple corporaexplorerobject
-#'   with no metadata.
-#'
-#' @param dataset A non-empty character vector.
+#' @rdname prepare_data
+#' @param dataset Object to convert to corporaexplorerobject:
+#'   \itemize{
+#'   \item A data frame with a column "Text" (class
+#'   character), and optionally other columns.
+#'   If \code{date_based_corpus} is \code{TRUE} (the default),
+#'   \code{dataset} must contain a column "Date" (of class Date).
+#'   \item Or a non-empty character vector.
+#' }
 #' @param ... Other arguments to be passed to \code{prepare_data}.
-#'
-#' @return A corporaexplorerobject.
+#' @inheritParams prepare_data.data.frame
 #' @export
 #'
+#' @details
+#' A character vector will be converted to a simple corporaexplorerobject
+#'   with no metadata.
+#'
 #' @examples
+#'
+#' ## From character vector
 #' alphabet_corpus <- prepare_data(LETTERS)
 #'
 #' if(interactive()){
 #' # Running exploration app:
-#' run_corpus_explorer(alphabet_corpus)
+#' explore(alphabet_corpus)
 #' }
-prepare_data.character <- function(dataset, ...) {
-  data <- tibble::tibble(Text = dataset)
-  prepare_data.data.frame(data, F, ...)
-}
+prepare_data.character <-
+  function(dataset,
+           corpus_name = NULL,
+           use_matrix = TRUE,
+           matrix_without_punctuation = TRUE,
+           ...) {
+    data <- tibble::tibble(Text = dataset)
+    prepare_data.data.frame(
+      data,
+      FALSE,
+      corpus_name = corpus_name,
+      use_matrix = use_matrix,
+      matrix_without_punctuation = matrix_without_punctuation,
+      ...
+    )
+  }
 
 #' Print corporaexplorerobject
 #'

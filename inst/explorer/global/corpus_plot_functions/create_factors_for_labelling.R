@@ -1,22 +1,22 @@
 #' Wrapper/loop function for label_gruppering()
 create_factors_for_labelling <-
-    function(count_oversikt,
-             df,
-             search_terms,
-             number_of_factors) {
-        # Samennslåing og faktor-ordning (til fargeinndeling og label)
-        # Arbitrært antall søketermer
-        # Fancy dplyr for assigning strings as column names
-        for (i in seq_along(search_terms)) {
-            kolonnenavn <- paste0("Term_", i)
-            df <-
-                dplyr::bind_cols(
-                    df,
-                    !!kolonnenavn := label_gruppering(count_oversikt, kolonnenavn, i, number_of_factors)
-                )
-        }
-        return(df)
+  function(count_oversikt,
+           df,
+           search_terms,
+           number_of_factors) {
+    # Samennslåing og faktor-ordning (til fargeinndeling og label)
+    # Arbitrært antall søketermer
+    # Fancy dplyr for assigning strings as column names
+    for (i in seq_along(search_terms)) {
+      kolonnenavn <- paste0("Term_", i)
+      df <-
+        dplyr::bind_cols(
+          df,
+          !!kolonnenavn := label_gruppering(count_oversikt, kolonnenavn, i, number_of_factors)
+        )
     }
+    return(df)
+  }
 
 #' Grouping counts into categories and assignign labels
 #'
@@ -30,7 +30,7 @@ create_factors_for_labelling <-
 #'
 #' @return Vector with factor/category for a search term. E.g. c("<NA>",
 #'   "1-1-2").
-label_gruppering <- function(df, column_name, prefix, number_of_factors = 8) {
+label_gruppering <- function(df, column_name, prefix, number_of_factors = NUMBER_OF_FACTORS) {
   df[column_name][df[column_name] == 0] <- NA
 
   if (length(unique(df[column_name][!is.na(df[column_name])])) > 1) {
