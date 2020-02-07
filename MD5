@@ -1,7 +1,7 @@
-55a485eab65b7e653f4fb29dd5fc27e6 *DESCRIPTION
+8619d5210c468e1845675bd95ef0182d *DESCRIPTION
 b43673840323362a165e3aff47012325 *LICENSE
 e6dad195e0f88e09d445a378caa596a9 *NAMESPACE
-d9ff97c0923c775a50872b2d5ca5b814 *NEWS.md
+1f450cc5da4148c068c35adf986dac6d *NEWS.md
 c74e49a77f68d1aac3346442a022d122 *R/corporaexplorer-deprecated.R
 77132b63f9b29b736c0d5f26647afe1a *R/create_test_data.R
 c0b8d4812e9961748b9f1285d57a9ddf *R/data.R
@@ -18,7 +18,7 @@ f092362a4c6c661656bc8a7e6f626cba *R/prepare_data.R
 8d2487dbf45064f33b08e5a80830b68e *R/utils-pipe.R
 fe617a3f800b72f80dc191bec832dc50 *R/zzz.R
 5187931267800781c3e75b01a58243a3 *README.md
-1f059a6845ecdf0f46b7f858b6020a53 *data/test_data.rda
+56b306ba4a50f37ba0114fac1b69a2be *data/test_data.rda
 da49751c29002ab4e5b28a1bcf2cd939 *inst/CITATION
 e1f9068e7f19aba9999a2ae185c559ba *inst/download/app.R
 3ad7e6a2c787bd5932d3b45f9a9584d5 *inst/download/css/download_css.css

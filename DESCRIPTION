@@ -1,7 +1,7 @@
 Package: corporaexplorer
 Type: Package
 Title: A 'Shiny' App for Exploration of Text Collections
-Version: 0.8.1
+Version: 0.8.1.1
 Authors@R: person("Kristian Lundby", "Gjerde", email = "kristian.gjerde@gmail.com",
   role = c("aut", "cre"))
 Description: Facilitates dynamic exploration of text collections through an
@@ -12,7 +12,7 @@ Description: Facilitates dynamic exploration of text collections through an
     retrieval/extraction of documents from a 'corporaexplorerobject' in a
     reading-friendly format. The package also includes demo apps with which
     one can explore Jane Austen's novels and the State of the Union Addresses
-    (data fra the 'janeaustenr' and 'sotu' packages respectively).
+    (data from the 'janeaustenr' and 'sotu' packages respectively).
 Depends: R (>= 3.0.0)
 Imports: data.table, dplyr, ggplot2, lubridate, magrittr, padr, plyr,
         RColorBrewer, re2r, rlang, rmarkdown, scales, shiny,
@@ -20,7 +20,7 @@ Imports: data.table, dplyr, ggplot2, lubridate, magrittr, padr, plyr,
         tibble, tidyr
 Suggests: janeaustenr, shinytest, sotu, testthat
 License: GPL-3 | file LICENSE
-Date/Publication: 2020-02-07 01:10:12 UTC
+Date/Publication: 2020-02-07 17:50:02 UTC
 LazyData: true
 RoxygenNote: 7.0.2
 Encoding: UTF-8
@@ -28,7 +28,7 @@ URL: https://kgjerde.github.io/corporaexplorer,
         https://github.com/kgjerde/corporaexplorer
 BugReports: https://github.com/kgjerde/corporaexplorer/issues
 NeedsCompilation: no
-Packaged: 2020-02-06 20:49:07 UTC; Kristian
+Packaged: 2020-02-07 08:49:49 UTC; Kristian
 Author: Kristian Lundby Gjerde [aut, cre]
 Maintainer: Kristian Lundby Gjerde <kristian.gjerde@gmail.com>
 Repository: CRAN
