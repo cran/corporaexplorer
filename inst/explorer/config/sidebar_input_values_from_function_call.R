@@ -3,7 +3,9 @@ input_arguments <- list(
     search_terms = NA,  # TODO this works, but I would like something more intuitive
     highlight_terms = "",
     filter_terms = "",
-    case_sensitivity = FALSE
+    case_sensitivity = FALSE,
+    extra_chart_terms = "",
+    extra_subset_terms = ""
 )
 
 # Receiving input from function arguments
@@ -30,3 +32,15 @@ input_arguments_derived <- list(
     else
         "Yes"
 )
+
+if (INCLUDE_EXTRA == TRUE) {
+    input_arguments_derived$extra_chart_terms <- paste(input_arguments$extra_chart_terms, collapse = "\n")
+    input_arguments_derived$extra_subset_terms <- paste(input_arguments$extra_subset_terms, collapse = "\n")
+
+    input_arguments_derived$extra_fields <-
+        if (identical(input_arguments$extra_chart_terms, "") &
+            identical(input_arguments$extra_subset_terms, ""))
+            NULL
+        else
+            "Yes"
+}

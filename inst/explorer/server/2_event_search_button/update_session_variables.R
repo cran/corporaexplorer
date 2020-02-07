@@ -19,7 +19,15 @@ session_variables$corpus_info_plot <- NULL
 # Collect search arguments from sidebar -----------------------------------
 
 # Calendar or document wall -----------------------------------------------
+previous_mode <- plot_mode$mode
 plot_mode$mode <- input$modus
+
+# Save state change in order to update only when changed
+if (previous_mode != plot_mode$mode) {
+  plot_mode$changed <- TRUE
+} else {
+  plot_mode$changed <- FALSE
+}
 
 # Time --------------------------------------------------------------------
 if (DATE_BASED_CORPUS == TRUE) {
@@ -80,3 +88,20 @@ search_arguments$custom_column <- collect_custom_column(search_arguments$raw_hig
 
 # Checking search arguments -----------------------------------------------
 search_arguments$all_ok <- check_all_input()
+
+# Extra session variables -------------------------------------------------
+if (INCLUDE_EXTRA == TRUE) {
+  cx_extra_reset_data()
+
+  search_arguments$extra_plot <- input$extra_plot_mode
+
+  search_arguments$extra_chart_terms <- input$magic_search_area %>%
+    stringr::str_split("\n") %>%
+    unlist(use.names = FALSE) %>%
+    unique()
+
+  if (!identical(search_arguments$extra_chart_terms, "") &
+    search_arguments$extra_plot != "regular") {
+    search_arguments$search_terms <- sprintf("PLACEHOLDER", seq_along(search_arguments$extra_chart_terms))
+  }
+}

@@ -111,7 +111,7 @@
 #'         search_options = list(optional_info = TRUE),
 #'         ui_options = list(font_size = "10px"),
 #'         search_input = list(search_terms = c("Tottenham", "Spurs")),
-#'         plot_options = list(MAX_DOCS_IN_WALL_VIEW = 12001,
+#'         plot_options = list(max_docs_in_wall_view = 12001,
 #'                                         colours = c("gray", "green")))
 #'
 #' # Running app to extract documents:
@@ -180,6 +180,8 @@ explore <- function(corpus_object,
   shiny::shinyOptions("corporaexplorer_plot_options" = plot_options)
 
   shiny::shinyOptions("corporaexplorer_data" = corpus_object)
+
+  shiny::shinyOptions("corporaexplorer_extra" = list(...)$extra)
 
   message(sprintf(
     "Exploring %s document%s",

@@ -3,6 +3,9 @@ output$korpuskarttittel <- shiny::renderText({
     corpus_map_title(plot_mode$mode)
 })
 
+# Hidden at start-up so it displays in correct position rather than jumping first
+shinyjs::show(selector = ".progress_text")
+
 output$korpuskart <- shiny::renderPlot({
 
     validate_max_docs_in_wall()
@@ -32,5 +35,6 @@ output$korpuskart <- shiny::renderPlot({
 
 }, height = function() {
     # https://github.com/rstudio/shiny/issues/650
-    input$PLOTSIZE
+    session_variables$plot_size
 })
+

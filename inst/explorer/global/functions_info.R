@@ -21,7 +21,7 @@ create_df_for_info <- function(session_variables,
     }
   }
 
-  if (highlight_terms_exist(search_arguments) == FALSE) {
+  if (info_terms_exist(search_arguments) == FALSE) {
     return(list(start_df = start_df))
   }
 
@@ -62,18 +62,20 @@ create_df_for_info <- function(session_variables,
 
   Years <- start_df$Year
 
-  start_df <- count_search_terms_hits(
-    start_df,
-    search_arguments,
-    loaded_data$original_matrix$data_dok,
-    loaded_data$ordvektorer$data_dok,
-    session_variables$data_dok,
-    "data_dok",
-    terms = terms
-  )
+  if (nrow(start_df) != 0) {
+    start_df <- count_search_terms_hits(
+      start_df,
+      search_arguments,
+      loaded_data$original_matrix$data_dok,
+      loaded_data$ordvektorer$data_dok,
+      session_variables$data_dok,
+      "data_dok",
+      terms = terms
+    )
+  }
 
   colnames(start_df) <- full_terms
-# browser()
+
   return(list(
     start_df = start_df,
     full_terms = full_terms,
@@ -193,8 +195,12 @@ text_about_filtered_corpus <-
     )
   }
 
-highlight_terms_exist <- function(search_arguments) {
-  return(length(search_arguments$terms_highlight) != 0)
+info_terms_exist <- function(search_arguments, info_mode = "regular") {
+  if (info_mode == "regular") {
+    return(length(search_arguments$terms_highlight) != 0)
+  } else if (info_mode == "extra") {
+    return(length(search_arguments$extra_chart_terms) != 0)
+  }
 }
 
 
@@ -205,8 +211,8 @@ pastebr <- function(...) {
 #' Creates plot in corpus info tab
 #'
 #' @return A ggplot2 plot object.
-corpus_info_plot <- function(start_df_list, search_arguments) {
-  if (length(search_arguments$terms_highlight) > 0) {
+corpus_info_plot <- function(start_df_list, search_arguments, info_mode) {
+  if (info_terms_exist(search_arguments, info_mode)) {
 
     start_df <- start_df_list$start_df
     full_terms <- colnames(start_df)
@@ -244,12 +250,7 @@ corpus_info_plot <- function(start_df_list, search_arguments) {
         info_plot + ggplot2::geom_line(ggplot2::aes(x = Year, y = Count, color = Term)) + ggplot2::scale_color_manual(values = MY_COLOURS)
     }
 
-    # TODO Does this need to be differentiated? If not, delete.
-    break_and_label_seq <- if (length(unique(fig_tib$Year)) < 8) {
-      1
-    } else {
-      1
-    }
+    break_and_label_seq <- 1
 # TODO: fine-tune axis labels
     info_plot <- info_plot + ggplot2::theme_classic() +
       ggplot2::scale_x_continuous(

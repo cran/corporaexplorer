@@ -1,13 +1,4 @@
 
-# Setting up data and config ----------------------------------------------
-if (!is.null(getOption("shiny.testmode"))) {
-  if (getOption("shiny.testmode") == TRUE) {
-    source("./config/config_tests.R", local = TRUE)
-  }
-} else {
-  source("./config/config.R", local = TRUE)
-}
-
 # Function files ----------------------------------------------------------
 source("./global/function_display_document.R", local = TRUE)
 source("./global/function_display_document_info.R", local = TRUE)
@@ -20,6 +11,15 @@ source("./global/function_visualise_corpus.R", local = TRUE)
 source("./global/function_visualise_document.R", local = TRUE)
 source("./global/functions_info.R", local = TRUE)
 source("./global/functions_main_search_engine.R", local = TRUE)
+
+# Setting up data and config ----------------------------------------------
+if (!is.null(getOption("shiny.testmode"))) {
+  if (getOption("shiny.testmode") == TRUE) {
+    source("./config/config_tests.R", local = TRUE)
+  }
+} else {
+  source("./config/config.R", local = TRUE)
+}
 
 #=============================================================================#
 ####================================  UI  =================================####
@@ -59,7 +59,9 @@ ui <- function(request) {
 
                # shinyjs
                ,
-               shinyjs::useShinyjs()
+               shinyjs::useShinyjs(),
+               shinyWidgets::useSweetAlert()
+
                # Body ends
       )
       # Page ends
@@ -79,12 +81,21 @@ source("./server/functions_ui_management.R", local = TRUE)
 source("./server/function_collect_edited_info_plot_legend_keys.R", local = TRUE)
 
 # Conditional and customised sidebar UI elements --------------------------
+source("./ui/render_ui_sidebar_checkbox_filtering.R", local = TRUE)
 source("./ui/render_ui_sidebar_date_filtering.R", local = TRUE)
 source("./ui/hide_ui_sidebar_plot_mode.R", local = TRUE)
 source("./ui/set_colours_in_search_fields.R", local = TRUE)
 
 # Session variables -------------------------------------------------------
 source("./server/session_variables.R", local = TRUE)
+
+# For use with potential "extra" plugins ----------------------------------
+if (INCLUDE_EXTRA == TRUE) {
+  source("./extra/extra_render_ui_sidebar_magic_filtering.R", local = TRUE)
+  source("./extra/extra_tab_content.R", local = TRUE)
+  source("./extra/extra_ui_management_functions.R", local = TRUE)
+  source("./extra/extra_session_variables.R", local = TRUE)
+}
 
 # Corpus info tab ---------------------------------------------------------
 source("./server/corpus_info_tab.R", local = TRUE)
@@ -107,6 +118,9 @@ source("./server/5_event_document_visualisation_click.R", local = TRUE)
 # 6. Event: hovering in corpus map ----------------------------------------
 source("./server/6_event_hover_corpus_map.R", local = TRUE)
 
+# 7. Event: update plot size ----------------------------------------------
+source("./server/7_event_plot_size_button.R", local = TRUE)
+
 # Cleaning up the session -------------------------------------------------
 shiny::onSessionEnded(function() {
   shiny::shinyOptions("corporaexplorer_data" = NULL)
@@ -114,6 +128,7 @@ shiny::onSessionEnded(function() {
   shiny::shinyOptions("corporaexplorer_ui_options" = NULL)
   shiny::shinyOptions("corporaexplorer_input_arguments" = NULL)
   shiny::shinyOptions("corporaexplorer_plot_options" = NULL)
+  shiny::shinyOptions("corporaexplorer_extra" = NULL)
 })
 }
 

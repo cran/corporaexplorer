@@ -28,6 +28,8 @@ if (is.null(loaded_data$name)) {
     CORPUS_TITLE <- loaded_data$name
 }
 
+UI_FILTERING_CHECKBOXES <- loaded_data$columns_for_ui_checkboxes
+
 # Search options from function arguments ----------------------------------
 
 search_options <- shiny::getShinyOption("corporaexplorer_search_options")
@@ -127,6 +129,19 @@ if (!is.null(plot_options$tile_length)) {
         loaded_data$original_data$data_dok$Tile_length <- 1
     }
 }
+
+# Extra boolean from function arguments -----------------------------------
+
+INCLUDE_EXTRA <- FALSE
+if (!is.null(shiny::getShinyOption("corporaexplorer_extra"))) {
+    INCLUDE_EXTRA <- shiny::getShinyOption("corporaexplorer_extra")
+    loaded_data$original_data$data_dok$Extra_tab_text <- ""
+}
+
+# Start-up plot size ------------------------------------------------------
+
+INITIAL_PLOT_SIZE <- plot_size(loaded_data$original_data$data_dok,
+                               DATE_BASED_CORPUS)
 
 # Pre-filled sidebar input from function argument -------------------------
 

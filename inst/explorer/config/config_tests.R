@@ -28,7 +28,9 @@ if (is.null(loaded_data$name)) {
     CORPUS_TITLE <- paste("Corpus map", "\u2013", loaded_data$name)
 }
 
-# From function arguments -------------------------------------------------
+UI_FILTERING_CHECKBOXES <- NULL
+
+# Search options from function arguments ----------------------------------
 
 NO_MATRIX <- FALSE
 
@@ -39,17 +41,29 @@ USE_ONLY_RE2R <- FALSE
 
 SAFE_SEARCH <- TRUE
 
-# UI options from function arguments --------------------------------------
+# Plot options from function arguments ------------------------------------
+
+PLOT_SIZE_FACTOR <- 15
+
+MAX_WIDTH_FOR_ROW <- 75
+
+DOCUMENT_TILES <- 50
 
 ui_options <- NULL  # To avoid errors when later checking for !is.null css elements
 
 MAX_DOCS_IN_WALL_VIEW <- 12000
 
-
-# Plot options from function arguments ------------------------------------
-
 MAIN_COLOURS <- c("red", "blue", "green", "purple", "orange", "gray")
 MY_COLOURS <- rep(MAIN_COLOURS, 10)
+
+# Extra boolean from function arguments -----------------------------------
+
+INCLUDE_EXTRA <- FALSE
+
+# Start-up plot size ------------------------------------------------------
+
+INITIAL_PLOT_SIZE <- plot_size(loaded_data$original_data$data_dok,
+                               DATE_BASED_CORPUS)
 
 # Pre-filled sidebar input from function argument -------------------------
 

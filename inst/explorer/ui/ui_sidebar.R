@@ -56,15 +56,30 @@ shinydashboard::dashboardSidebar(
         size = "sm",
         selected = input_arguments_derived$filter_corpus_button
     ),
-    div(
+
     conditionalPanel(
         condition = "input.subset_corpus == 'Yes'",
-        textAreaInput("filter_text_area", label = NULL, placeholder = "Terms separated by newline",
-                      value = input_arguments_derived$filter_terms)
-    ), class = "subset_field"),
+
+        # Filter text area
+        div(
+            shiny::textAreaInput(
+                "filter_text_area",
+                label = NULL,
+                placeholder = "Terms separated by newline",
+                value = input_arguments_derived$filter_terms
+            )
+            ,
+            class = "subset_field"
+        ),
+
+        # Conditionally rendered checkbox filtering UI in server
+        shiny::uiOutput('checkbox_filtering_ui')
+        ),
+
+        # Conditionally rendered checkbox filtering UI in server
+        shiny::uiOutput('magic_text_area_ui'),
 
     shiny::hr(),
-
     shinyWidgets::prettyCheckbox(inputId = "case_sensitivity",
                    label = "Case sensitive search (slower)",
                    value = input_arguments$case_sensitivity,
@@ -97,19 +112,24 @@ shinydashboard::dashboardSidebar(
 
      shiny::div(shiny::conditionalPanel(
            condition = "input.adjust_plotsize == 'Yes'",
-        shiny::sliderInput(
+           shiny::sliderInput(
             inputId = "PLOTSIZE",
             label = NULL,
             min = 100,
             ticks = FALSE,
             step = 50,
-            max = plot_size(loaded_data$original_data$data_dok,
-                            DATE_BASED_CORPUS) * 2,
-            value = plot_size(loaded_data$original_data$data_dok,
-                              DATE_BASED_CORPUS)
-            )
-        ), class = "plotsize_field"
-    ),
+            max = INITIAL_PLOT_SIZE * 2,
+            value = INITIAL_PLOT_SIZE
+            ),
+
+           shinyWidgets::actionBttn(
+               "size_button",
+               label = "Adjust size",
+               size = "xs",
+               style = "bordered",
+               block = TRUE
+           ), class = "plotsize_field"
+     )),
 
     shiny::hr(),
 

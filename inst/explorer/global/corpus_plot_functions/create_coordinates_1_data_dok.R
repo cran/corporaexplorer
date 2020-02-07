@@ -9,10 +9,8 @@
 create_coordinates_1_data_dok <- function(df, linjer, max_width_for_row = NULL) {
 
 if(is.null(max_width_for_row)){
-max_width_for_row <- sqrt(sum(df$Tile_length) /  linjer)  # TODO: width-algoritmer
+max_width_for_row <- MAX_WIDTH_FOR_ROW / 1.3  # TODO: width-algoritmer
 }
-
-max_width_for_row <- MAX_WIDTH_FOR_ROW / 1.3
 
 # df$x_min <- NA
 df$x_max <- cumsum(df$Tile_length)
@@ -48,13 +46,12 @@ y_min[y_min == 0] <- NA
 if (nrow(df) > 1) {
     y_min[last_tile_in_row] <- seq_along(last_tile_in_row)
 }
-y_min <- zoo::na.locf(y_min, fromLast = TRUE, na.rm = FALSE)
 
-y_min <-
-    c(y_min, rep(max(y_min) + 1, nrow(df) - length(y_min)))
+# Fyller inn slik at alle dokumenter får sin y_min(=rad) på plass
+y_min <- replace_NAs_with_next_or_previous_non_NA(y_min, direction = "next", remove_na = FALSE)
 
-y_max <- y_min #*-1  # *-1 fordi reversed scale
-y_min <- y_max - 1   # + 1 i stedet for -1 fordi reversed scale
+y_max <- y_min
+y_min <- y_max - 1
 
 df$y_min <- y_min
 df$y_max <- y_max

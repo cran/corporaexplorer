@@ -1,19 +1,21 @@
-source("./global/corpus_plot_functions/colours_to_plot_and_legend.R",local = TRUE)
-source("./global/corpus_plot_functions/count_search_terms_hits.R",local = TRUE)
-source("./global/corpus_plot_functions/create_coordinates_several_terms.R",local = TRUE)
-source("./global/corpus_plot_functions/create_factors_for_labelling.R",local = TRUE)
+source("./global/corpus_plot_functions/colours_to_plot_and_legend.R", local = TRUE)
+source("./global/corpus_plot_functions/count_search_terms_hits.R", local = TRUE)
+source("./global/corpus_plot_functions/create_coordinates_several_terms.R", local = TRUE)
+source("./global/corpus_plot_functions/create_factors_for_labelling.R", local = TRUE)
 source("./global/corpus_plot_functions/label_axes.R", local = TRUE)
 
-source("./global/corpus_plot_functions/create_coordinates_1_data_365.R",local = TRUE)
-source("./global/corpus_plot_functions/create_distance_coordinates_365.R",local = TRUE)
-source("./global/corpus_plot_functions/plotting_corpus_data_365.R",local = TRUE)
+source("./global/corpus_plot_functions/convenience_functions_corpus_vis.R", local = TRUE)
 
-source("./global/corpus_plot_functions/create_coordinates_1_data_dok.R",local = TRUE)
-source("./global/corpus_plot_functions/create_distance_coordinates_dok.R",local = TRUE)
-source("./global/corpus_plot_functions/plotting_corpus_data_dok.R",local = TRUE)
+source("./global/corpus_plot_functions/create_coordinates_1_data_365.R", local = TRUE)
+source("./global/corpus_plot_functions/create_distance_coordinates_365.R", local = TRUE)
+source("./global/corpus_plot_functions/plotting_corpus_data_365.R", local = TRUE)
 
-source("./global/corpus_plot_functions/create_distance_coordinates_day.R",local = TRUE)
-source("./global/corpus_plot_functions/plotting_corpus_day.R",local = TRUE)
+source("./global/corpus_plot_functions/create_coordinates_1_data_dok.R", local = TRUE)
+source("./global/corpus_plot_functions/create_distance_coordinates_dok.R", local = TRUE)
+source("./global/corpus_plot_functions/plotting_corpus_data_dok.R", local = TRUE)
+
+source("./global/corpus_plot_functions/create_distance_coordinates_day.R", local = TRUE)
+source("./global/corpus_plot_functions/plotting_corpus_day.R", local = TRUE)
 
 #' Corpus map/plot constructor
 #'
@@ -42,87 +44,128 @@ visualiser_korpus <-
            doc_df,
            search_arguments,
            modus) {
-
     linjer <- length(search_arguments$search_terms)
 
 # 1. Check if search contains search terms --------------------------------
 
-    if (identical(search_arguments$search_terms, "")) {
-      df$Term_1 <- NA
-
-    } else{
-
-# 2. Count search term hits and assign factors for labelling --------------
-
-      df <-
-        count_search_terms_hits(df,
-                                search_arguments,
-                                matriksen,
-                                ordvektor,
-                                doc_df,
-                                modus) %>%
-        create_factors_for_labelling(., df,
-                                     search_terms = search_arguments$search_terms,
-                                     number_of_factors)
+    if (INCLUDE_EXTRA == TRUE) {
+      if (search_arguments$extra_plot != "regular") {
+        if (identical(search_arguments$extra_chart_terms, "")) {
+          search_arguments$search_terms <- ""
+          linjer <- 1
+        }
+      }
     }
 
-# 3. Create plot coordinates, step 1 --------------------------------------
+    if (identical(search_arguments$search_terms, "")) {
+      df$Term_1 <- NA
+    } else {
+
+# 2. Count search term hits -----------------------------------------------
+local_flag <- FALSE
+if (INCLUDE_EXTRA == TRUE) {
+  if (search_arguments$extra_plot != "regular") {
+# TODO better validation
+      linjer <- length(search_arguments$extra_chart_terms)
+      local_flag <- TRUE
+      count_overview <- data.frame(dummy = seq_len(nrow(df)))
+
+      for (i in seq_len(linjer)) {
+        count_overview[i] <- cx_extra_chart(search_arguments$extra_chart_terms[i],
+                                         doc_df,
+                                         df,
+                                         search_arguments$case_sensitive,
+                                         modus,
+                                         indices_included = doc_df$ID)
+      }
+      colnames(count_overview) <- sprintf("Term_%s", seq_len(linjer))
+  }
+}
+
+  # The regular one:
+  if (local_flag == FALSE) {
+    count_overview <-
+      count_search_terms_hits(
+        df,
+        search_arguments,
+        matriksen,
+        ordvektor,
+        doc_df,
+        modus
+      )
+  }
+
+# 3. Assign factors for labelling -----------------------------------------
+
+      df <- create_factors_for_labelling(count_overview,
+        df,
+        search_terms = search_arguments$search_terms,
+        number_of_factors
+      )
+    }
+
+# 4. Create plot coordinates, step 1 --------------------------------------
 
     if (modus == "data_365") {
-     # width = 53 # fordi uker
+      # width = 53 # fordi uker
       df$Month <- lubridate::month(df$Date)
       df$label_id <- seq_len(nrow(df))
       df <- create_coordinates_1_data_365(df)
     } else if (modus == "data_dok") {
-
       df <- create_coordinates_1_data_dok(df, linjer)
     } else if (modus == "day") {
-
       df <- create_coordinates_1_data_dok(df, linjer, max_width_for_row = 15)
     }
 
-# 4. Create plot coordinates, step 2 (if search terms > 1) ----------------
+# 5. Create plot coordinates, step 2 (if search terms > 1) ----------------
 
     df <-
       create_coordinates_several_search_terms(df, linjer)
     df <- dplyr::select(df, -dplyr::starts_with("Term_"))
 
-# 5. Create plot coordinates, step 3 (distance between days etc.) ---------
+# 6. Create plot coordinates, step 3 (distance between days etc.) ---------
 
     if (modus == "data_365") {
-      df <- create_distance_coordinates_365(df,
-                                               linjer,
-                                               day_distance,
-                                               month_distance,
-                                               year_distance)
+      df <- create_distance_coordinates_365(
+        df,
+        linjer,
+        day_distance,
+        month_distance,
+        year_distance
+      )
     } else if (modus == "data_dok") {
-      df <- create_distance_coordinates_dok(df,
-                                                linjer)
-    } else if (modus == "day"){
-      df <- create_distance_coordinates_day(df,
-                                                linjer,
-                                                day_distance)
+      df <- create_distance_coordinates_dok(
+        df,
+        linjer
+      )
+    } else if (modus == "day") {
+      df <- create_distance_coordinates_day(
+        df,
+        linjer,
+        day_distance
+      )
     }
 
-# 6. Label x and y axes ---------------------------------------------------
+# 7. Label x and y axes ---------------------------------------------------
     y_text <- label_y_axis(df)
 
     if (modus == "data_365") {
       x_breaks <- label_x_axis_365(df)
     }
 
-# 7. Assign colours to plot labels/factors (up to 2 terms) ----------------
+# 8. Assign colours to plot labels/factors (up to 2 terms) ----------------
 
     temp_variable_for_unpacking <-
       colours_to_plot_and_legend(df,
-                                 linjer,
-                                 number_of_factors,
-                                 !identical(search_arguments$search_terms, ""),
-                                 plot_mode = modus)
+        linjer,
+        number_of_factors,
+        !identical(search_arguments$search_terms, ""),
+        plot_mode = modus
+      )
     df <- temp_variable_for_unpacking[[1]]
     legend_df <- temp_variable_for_unpacking[[2]]
 
-# 8. ggplotting -----------------------------------------------------------
+# 9. ggplotting -----------------------------------------------------------
 
     if (modus == "data_365") {
       plotting_corpus_data_365(df, x_breaks, y_text, legend_df, linjer)
