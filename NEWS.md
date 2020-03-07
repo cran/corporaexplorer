@@ -1,9 +1,19 @@
+# corporaexplorer 0.8.2
+
+## re2r regex engine disabled
+* Because 're2r' will be removed/archived by the CRAN maintainers.
+See https://github.com/qinwf/re2r/issues/22.
+
+## Other
+
+* the apps now allow any mix of whitespace in input terms
+
 # corporaexplorer 0.8.1.1
 
 ## New arguments
 
 * Added `columns_for_ui_checkboxes` argument to prepare_data() in order to include
-sidebar checkboxes for convenient filtering by categorical variable/column (not necessarily factor type, but most helpful when limited number of values in the variable) in the explorer app (explore()).
+sidebar checkboxes for convenient filtering by categorical variable/column (not necessarily factor type, but most helpful when limited number of values in the variable) in the explorer app (`explore()`).
 
 ## Other
 
