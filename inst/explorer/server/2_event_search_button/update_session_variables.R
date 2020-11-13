@@ -94,11 +94,16 @@ if (INCLUDE_EXTRA == TRUE) {
   cx_extra_reset_data()
 
   search_arguments$extra_plot <- input$extra_plot_mode
-
   search_arguments$extra_chart_terms <- input$magic_search_area %>%
     stringr::str_split("\n") %>%
     unlist(use.names = FALSE) %>%
     unique()
+
+  # HACKY TODO. This is because otherwise an empty field is character(0) instead of "" and fails cx_validate_input
+  if (length(search_arguments$extra_chart_terms) > 1) {
+     search_arguments$extra_chart_terms <-
+       search_arguments$extra_chart_terms[!stringi::stri_isempty(search_arguments$extra_chart_terms)]
+  }
 
   if (!identical(search_arguments$extra_chart_terms, "") &
     search_arguments$extra_plot != "regular") {
