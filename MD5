@@ -1,7 +1,7 @@
-e5bd42eddeb54b956abb3a5c466d0943 *DESCRIPTION
+c0afde324f51619f0b223b91ab6f9be6 *DESCRIPTION
 b43673840323362a165e3aff47012325 *LICENSE
 e6dad195e0f88e09d445a378caa596a9 *NAMESPACE
-e78be8cbbf5464b567bf43bbd320ff66 *NEWS.md
+3cdc74f81f28260429f8e7bb605a810f *NEWS.md
 c74e49a77f68d1aac3346442a022d122 *R/corporaexplorer-deprecated.R
 77132b63f9b29b736c0d5f26647afe1a *R/create_test_data.R
 c0b8d4812e9961748b9f1285d57a9ddf *R/data.R
@@ -17,8 +17,8 @@ ffb426de1d6e401de18b1a2625595f90 *R/prepare_data.R
 86caea7c44fe386d77dead82395703bd *R/run_document_extractor.R
 8d2487dbf45064f33b08e5a80830b68e *R/utils-pipe.R
 fe617a3f800b72f80dc191bec832dc50 *R/zzz.R
-9d434fde969f99a9af5d4d7a9985e387 *README.md
-5b1aa61b67d4b8dc4b526618ef81c482 *data/test_data.rda
+bdcf58fce9892dbc6d7d428619ceaa27 *README.md
+f9437d7538d07db59b33bff36c724105 *data/test_data.rda
 da49751c29002ab4e5b28a1bcf2cd939 *inst/CITATION
 e1f9068e7f19aba9999a2ae185c559ba *inst/download/app.R
 3ad7e6a2c787bd5932d3b45f9a9584d5 *inst/download/css/download_css.css
@@ -40,7 +40,7 @@ f77db73b72fb73398d92b62669152571 *inst/download/server/server_element_control.R
 2108db71fd37e2556ccc8d95645ff07d *inst/download/tests/shinytest.R
 e4607f532368e7acbf25abd3770f4cd2 *inst/download/tests/shinytest/search_test.R
 9b9d9eec55a800c81d5daced691754d0 *inst/download/ui/css_js_import.R
-7558026eeedcff1ed42842d7f760c4e1 *inst/download/ui/render_ui_sidebar_date_filtering.R
+678ef88e74f0b6c2d1401234bba000cd *inst/download/ui/render_ui_sidebar_date_filtering.R
 267aace80547d7ace5fb740d4345b4de *inst/download/ui/ui_download_box.R
 28201e76399f8393acf5d0fc87b1a2f6 *inst/download/ui/ui_info_box.R
 28e919d4b1fd7a643c27decfd3b38294 *inst/download/ui/ui_sidebar.R
@@ -123,7 +123,7 @@ c484f6125c9c069d6f41ce21de5c6805 *inst/explorer/tests/shinytest/date_test.R
 983b8002c9f2a4f82e9f5c506ec948b8 *inst/explorer/ui/css_js_import.R
 2479eb90c6d35354587aa41eb017bf86 *inst/explorer/ui/hide_ui_sidebar_plot_mode.R
 9fa5ce195d39bd4053f50e5ea7420282 *inst/explorer/ui/render_ui_sidebar_checkbox_filtering.R
-e07ac003ba1c2b373fd5ae5233ffeb66 *inst/explorer/ui/render_ui_sidebar_date_filtering.R
+fbb5d764b087208478e21520f33a2f8d *inst/explorer/ui/render_ui_sidebar_date_filtering.R
 eefd7ab294003ec54d7f97e651963b02 *inst/explorer/ui/set_colours_in_search_fields.R
 bf289ce6a601a4a8865363d19235b6f0 *inst/explorer/ui/ui_corpus_box.R
 826a056707c8d00707317ef504430510 *inst/explorer/ui/ui_day_in_corpus_box.R
