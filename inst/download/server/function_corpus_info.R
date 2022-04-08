@@ -1,15 +1,15 @@
 corpus_info_text <- function() {
     terms_highlight <- search_arguments$highlight_terms
 
-    tekst <- sprintf("The corpus contains %i documents.",
-                     nrow(abc))
+    tekst <- sprintf("The corpus contains %s documents.",
+                     format(nrow(abc), big.mark=","))
 
     if (nrow(sv$subset) != nrow(abc)) {
         tekst <- paste(sep = "<br>",
                        tekst,
                        sprintf(
-                           "The filtered corpus contains %i documents.",
-                           nrow(sv$subset)
+                           "The filtered corpus contains %s documents.",
+                           format(nrow(sv$subset), big.mark = ",")
                        ))
     }
 
@@ -28,10 +28,10 @@ corpus_info_text <- function() {
                 sep = "<br>",
                 tekst,
                 sprintf(
-                    "%s is found a total of %i times in %i documents.",
+                    "%s is found a total of %s times in %s documents.",
                     term,
-                    treff,
-                    docs
+                    format(treff, big.mark=","),
+                    format(docs, big.mark=",")
                 )
             )
         }

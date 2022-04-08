@@ -12,6 +12,8 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![R build
 status](https://github.com/kgjerde/corporaexplorer/workflows/R-CMD-check/badge.svg)](https://github.com/kgjerde/corporaexplorer/actions)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01342/status.svg)](https://doi.org/10.21105/joss.01342)
+[![Mentioned in Awesome
+R](https://awesome.re/mentioned-badge.svg)](https://github.com/qinwf/awesome-R)
 <!-- badges: end -->
 
 > **“I really like the application and its simplicity. It looks great
@@ -32,7 +34,7 @@ status](https://github.com/kgjerde/corporaexplorer/workflows/R-CMD-check/badge.s
 <p style="color:green">
 <strong>– Featured in RStudio’s “R Views” blog’s
 <a href="https://rviews.rstudio.com/2019/10/29/sept-2019-top-40-new-r-packages/"><strong><i>“Top
-40 New R Packages”</i></strong></a> for September 2019</strong>
+40 New R Packages”</i></strong></a></strong>
 </p>
 </blockquote>
 <blockquote>
@@ -185,6 +187,6 @@ welcome. Ways to contribute:
 -   Issues and bug reports: [File a GitHub
     issue](https://github.com/kgjerde/corporaexplorer/issues).
 -   Fork the source code, modify, and issue a [pull
-    request](https://help.github.com/articles/creating-a-pull-request-from-a-fork/)
+    request](https://docs.github.com/articles/creating-a-pull-request-from-a-fork/)
     through the [project GitHub
     page](https://github.com/kgjerde/corporaexplorer).
