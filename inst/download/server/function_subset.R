@@ -1,12 +1,12 @@
 
 
 # subset_year <- function(.tibble, year_1, year_2) {
-#     filtrert_tibble <- .tibble[.tibble$Year %in% year_1:year_2,]
+#     filtrert_tibble <- .tibble[.tibble$Year_ %in% year_1:year_2,]
 #     return(filtrert_tibble)
 # }
 
 subset_date <- function(.tibble, date_1, date_2) {
-    filtrert_tibble <- .tibble[.tibble$Date %in% date_1:date_2,]
+    filtrert_tibble <- .tibble[.tibble$Date >= date_1 & .tibble$Date <= date_2,]
     return(filtrert_tibble)
 }
 
@@ -35,13 +35,13 @@ subset_terms <- function(.tibble, terms, threshold, custom_column) {
                 text_column <-
                     rlang::sym(custom_column[i])
             } else {
-                text_column <- rlang::sym("Text")
+                text_column <- rlang::sym("Text_column_")
             }
-            
+
             if (is.na(threshold[i])) {
                 threshold[i] <- 1
             }
-            
+
             .tibble <- .tibble %>%
                 dplyr::mutate(hitcount =
                                   stringr::str_count(

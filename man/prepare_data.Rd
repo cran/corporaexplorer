@@ -11,8 +11,9 @@ prepare_data(dataset, ...)
 \method{prepare_data}{data.frame}(
   dataset,
   date_based_corpus = TRUE,
+  text_column = "Text",
   grouping_variable = NULL,
-  within_group_identifier = "Seq",
+  within_group_identifier = "sequential",
   columns_doc_info = c("Date", "Title", "URL"),
   corpus_name = NULL,
   use_matrix = TRUE,
@@ -33,7 +34,7 @@ prepare_data(dataset, ...)
 \arguments{
 \item{dataset}{Object to convert to corporaexplorerobject:
   \itemize{
-  \item A data frame with a column "Text" (class
+  \item A data frame with a specified column containing text (default column name: "Text") (class
   character), and optionally other columns.
   If \code{date_based_corpus} is \code{TRUE} (the default),
   \code{dataset} must contain a column "Date" (of class Date).
@@ -45,17 +46,25 @@ prepare_data(dataset, ...)
 \item{date_based_corpus}{Logical. Set to \code{FALSE} if the corpus
 is not to be organised according to document dates.}
 
-\item{grouping_variable}{Character string.
-If \code{date_based_corpus} is \code{TRUE}, this argument is ignored.
-If \code{date_based_corpus} is \code{FALSE}, this argument can be used
-to group the documents, e.g. if \code{dataset} is organised by chapters
-belonging to different books.}
+\item{text_column}{Character. Default: "Text".
+The column in \code{dataset} containing texts to be explored.}
+
+\item{grouping_variable}{Character string indicating column name in dataset.
+If date_based_corpus is TRUE, this argument is ignored.
+If date_based_corpus is FALSE, this argument is used to group the documents,
+e.g., if dataset is organised by chapters belonging to different books.
+The order of groups in the app is determined as follows:
+\itemize{
+\item If grouping_variable is a factor column, the factor levels determine the order.
+\item If grouping_variable is not a factor, the order is determined by the
+  sequence in which unique values first appear in the dataset.}}
 
 \item{within_group_identifier}{Character string indicating column name in \code{dataset}.
-\code{"Seq"}, the default, means the rows in each group are assigned
+If \code{date_based_corpus} is \code{TRUE}, this argument is ignored.
+If \code{date_based_corpus} is \code{FALSE},
+\code{"sequential"}, the default, means the rows in each group are assigned
 a numeric sequence 1:n where n is the number of rows in the group.
-Used in document tab title in non-date based corpora.
-If \code{date_based_corpus} is \code{TRUE}, this argument is ignored.}
+Used in document tab title in non-date based corpora.}
 
 \item{columns_doc_info}{Character vector. The columns from \code{dataset} to display in
 the "document information" tab in the corpus exploration app. By default
@@ -94,7 +103,7 @@ the \code{use_matrix} parameter to \code{FALSE}, or run
 \item{tile_length_range}{Numeric vector of length two.
 Fine-tune the tile lengths in document wall
 and day corpus view. Tile length is calculated by
-\code{scales::rescale(nchar(dataset$Text),
+\code{scales::rescale(nchar(dataset[[text_column]]),
 to = tile_length_range,
 from = c(0, max(.)))}
 Default is \code{c(1, 10)}.}
@@ -127,11 +136,13 @@ Convert data frame or character vector to a ‘corporaexplorerobject’
 For data.frame: Each row in \code{dataset} is treated as a base differentiating unit in the corpus,
   typically chapters in books, or a single document in document collections.
   The following column names are reserved and cannot be used in \code{dataset}:
-  "ID",
+  "Date_",
+  "cx_ID",
   "Text_original_case",
+  "Text_column_",
   "Tile_length",
-  "Year",
-  "Seq",
+  "Year_",
+  "cx_Seq",
   "Weekday_n",
   "Day_without_docs",
   "Invisible_fake_date",

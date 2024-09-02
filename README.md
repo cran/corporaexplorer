@@ -10,7 +10,7 @@ status](https://www.r-pkg.org/badges/version/corporaexplorer)](https://cran.r-pr
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![R build
-status](https://github.com/kgjerde/corporaexplorer/workflows/R-CMD-check/badge.svg)](https://github.com/kgjerde/corporaexplorer/actions)
+status](https://github.com/kgjerde/corporaexplorer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/kgjerde/corporaexplorer/actions)
 [![DOI](http://joss.theoj.org/papers/10.21105/joss.01342/status.svg)](https://doi.org/10.21105/joss.01342)
 [![Mentioned in Awesome
 R](https://awesome.re/mentioned-badge.svg)](https://github.com/qinwf/awesome-R)
@@ -100,11 +100,6 @@ devtools::install_github("kgjerde/corporaexplorer")
 look much clunkier on Windows than on the other platforms, but the apps
 are fully functional.)
 
-*Note to developers: The package’s internal test suite uses the
-[`shinytest`](https://github.com/rstudio/shinytest) package, which
-requires that [`PhantomJS`](https://phantomjs.org/) is installed. This
-can be done through the `shinytest::installDependencies()` function.*
-
 ## How to cite
 
 Please cite the following paper if you use **corporaexplorer** in your
@@ -183,10 +178,10 @@ article](https://kunststube.net/encoding/) by David C. Zentgraf.
 Contributions in the form of feedback, bug reports and code are most
 welcome. Ways to contribute:
 
--   Contact [me](mailto:klg@nupi.no) by email.
--   Issues and bug reports: [File a GitHub
-    issue](https://github.com/kgjerde/corporaexplorer/issues).
--   Fork the source code, modify, and issue a [pull
-    request](https://docs.github.com/articles/creating-a-pull-request-from-a-fork/)
-    through the [project GitHub
-    page](https://github.com/kgjerde/corporaexplorer).
+- Contact [me](mailto:klg@nupi.no) by email.
+- Issues and bug reports: [File a GitHub
+  issue](https://github.com/kgjerde/corporaexplorer/issues).
+- Fork the source code, modify, and issue a [pull
+  request](https://docs.github.com/articles/creating-a-pull-request-from-a-fork/)
+  through the [project GitHub
+  page](https://github.com/kgjerde/corporaexplorer).

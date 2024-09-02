@@ -39,7 +39,7 @@ plotting_corpus_data_365 <- function(test1, x_breaks, y_text, legend_df, linjer)
         xend = test1[test1$df == 1,]$x_max,
         y = test1[test1$df == 1,]$y_min,
         yend = test1[test1$df == 1,]$y_max + linjer - 1,
-        Year = test1$Year[test1$df == 1],
+        Year_ = test1$Year_[test1$df == 1],
         Month = test1$Month[test1$df == 1]
     )
 
@@ -61,6 +61,7 @@ plotting_corpus_data_365 <- function(test1, x_breaks, y_text, legend_df, linjer)
             drop=FALSE  # To include my dummy levels
         )
 
+test1 <- improve_visualisation_of_2_terms(test1, linjer)
 
 # Fill, one for each search_term (or for no search_term)
 for (i in seq_len(linjer)) {
@@ -87,7 +88,7 @@ for (i in seq_len(linjer)) {
         ),
         fill = NA,
         color = "black",
-        size = 0.15
+        linewidth = 0.15
     )
 
     # # Og her er for å indikere dager uten dokumenter:
@@ -102,7 +103,7 @@ for (i in seq_len(linjer)) {
             ),
             fill = "white",
             colour = "white",
-            size = 0.2,
+            linewidth = 0.2,
             na.rm = TRUE
         )
 
@@ -117,7 +118,7 @@ for (i in seq_len(linjer)) {
                 ymax = y_max
             ),
             fill = "white",
-            size = 1,
+            linewidth = 1,
             colour = "white"
         )
 

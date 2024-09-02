@@ -21,7 +21,7 @@ visualiser_dok <-
     }
 
     if (case_sensitive == FALSE) {
-      .text <- .text$Text
+      .text <- .text$Text_column_
     } else if (case_sensitive == TRUE) {
       .text <- .text$Text_original_case
     }
@@ -134,7 +134,7 @@ visualiser_dok <-
                           width = 1,
                           height = 1
                         )) +
-        ggplot2::geom_tile(color = "black", size = 0.1) +
+        ggplot2::geom_tile(color = "black", linewidth = 0.1) +
         ggplot2::coord_fixed(ratio = 1, expand = FALSE) +
         ggplot2::labs(x = NULL, y = NULL) +
         ggplot2::scale_fill_identity() + # , values = c(0,0.1,1)) +
